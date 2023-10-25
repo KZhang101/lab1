@@ -7,8 +7,8 @@ class RomiChassis{
     private:
         //Romi specific constants:
         // !!! ATTENTION !!!
-        const float N_wheel = 0; //how many counts equate to one wheel rotation?
-        const float R_wheel = 0; //what is the radius of a Romi wheel in [mm]
+        const float N_wheel = 1440; //how many counts equate to one wheel rotation?
+        const float R_wheel = 35; //what is the radius of a Romi wheel in [mm]
         const float C_wheel = 2*PI*R_wheel; //circumference of wheel
 
         //declare variables for PI controller
@@ -33,11 +33,15 @@ class RomiChassis{
         int prev_count_left = 0;
         int prev_count_right = 0;
         float previous_time = 0;
+        int effort_left = 0;
+        int effort_right = 0; 
 
 
     public:
         float SpeedLeft(void);
         float SpeedRight(void);
+        float EffortLeft(void);
+        float EffortRight(void);
 
         void UpdateEffortDriveWheels(int a, int b);
         void UpdateEffortDriveWheelsP(int a, int b);

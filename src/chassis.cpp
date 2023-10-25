@@ -3,21 +3,35 @@
 
 float RomiChassis::SpeedLeft(void)
 {
-    // !!! ATTENTION !!!
-    // Assignment 1
-    return 0.00; //[mm/s]
+  // !!! ATTENTION !!!
+  // Assignment 1
+  float speed = (C_wheel / N_wheel) * ((count_left - prev_count_left) / interval); // Possible mistake on time 
+  return speed; //[mm/s]
 }
 
 float RomiChassis::SpeedRight(void)
 {
-    // !!! ATTENTION !!!
-    // Assignment 1
-    return 0.00; //[mm/s]
+  // !!! ATTENTION !!!
+  // Assignment 1
+  float speed = (C_wheel / N_wheel) * ((count_right - prev_count_right) / interval); // Possible mistake on time 
+  return speed; //[mm/s]
 }
+
+
+float RomiChassis::EffortLeft(void){
+  return effort_left;
+}
+
+float RomiChassis::EffortRight(void){
+  return effort_right;
+}
+
+
+
 
 void RomiChassis::UpdateEffortDriveWheels(int left, int right)
 { 
-    motors.setEfforts(left,right);
+  motors.setEfforts(left,right);
 }
 
 void RomiChassis::UpdateEffortDriveWheelsPI(int target_speed_left, int target_speed_right)
@@ -27,6 +41,18 @@ void RomiChassis::UpdateEffortDriveWheelsPI(int target_speed_left, int target_sp
   {
     float u_left = 0;
     float u_right = 0;
+
+    float error_Left = target_speed_left - this->SpeedLeft(); 
+    float error_Right = target_speed_right - this->SpeedRight(); 
+
+    E_left += error_Left;
+    E_right += error_Right; 
+
+    u_left = Kp * error_Left + Ki * E_left; 
+    u_right = Kp * error_Right + Ki * E_right; 
+
+    effort_left = u_left;
+    effort_right = u_right;
     motors.setEfforts(u_left,u_right);
   }
 }

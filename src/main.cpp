@@ -27,6 +27,7 @@ void loop()
 
     case ROBOT_DRIVING:
       chassis.MotorControl();
+      chassis.SerialPlotter(chassis.SpeedLeft(), chassis.EffortLeft(), chassis.SpeedRight(), chassis.EffortRight() );
       if(chassis.CheckDriveComplete()) 
       {
         chassis.Stop();
